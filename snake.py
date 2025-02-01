@@ -36,7 +36,7 @@ while not exit_game:
 
     #Food Creation
 
-    if abs( (car_pos.x - food_pos.x < 2) and (car_pos.y - food_pos.y < 2) ):
+    if (abs(car_pos.x - food_pos.x) < 2) and (abs(car_pos.y - food_pos.y) < 2):
         print("car_pos: ",car_pos.x, car_pos.y)
         print("food_pos: ",food_pos.x, food_pos.y)
         food_pos = pygame.Vector2(random.randint(20, int(gameWindow.get_width() -100)),random.randint(20, int(gameWindow.get_height() -100)))
