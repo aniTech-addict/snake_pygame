@@ -2,6 +2,9 @@ import pygame
 x = pygame.init()
 
 VELOCITY = 5
+
+velocity_x = 0
+velocity_y = 0
 #Game Display Window
 gameWindow = pygame.display.set_mode((1200, 600))
 clock = pygame.time.Clock()
@@ -21,8 +24,6 @@ while not exit_game:
         if event.type == pygame.QUIT:
             exit_game = True
 
-    car_pos.x += VELOCITY
-
     gameWindow.fill("white")
                 
     pygame.draw.rect(gameWindow,"red",[car_pos.x,car_pos.y,40,40],40)
@@ -35,13 +36,24 @@ while not exit_game:
     player_speed = 250 * dt
 
     if keys[pygame.K_w]:
-        car_pos.y -= player_speed
+        velocity_y = -5
+        velocity_x = 0
+        
     if keys[pygame.K_s]:
-        car_pos.y += player_speed
+        velocity_y = 5
+        velocity_x = 0
+        
     if keys[pygame.K_a]:
-        car_pos.x -= player_speed
+        velocity_x = -5
+        velocity_y = 0
+        
     if keys[pygame.K_d]:
-        car_pos.x += player_speed
+        velocity_x = 5
+        velocity_y = 0
+    
+        
+    car_pos.x += velocity_x
+    car_pos.y += velocity_y
 
     pygame.display.flip()
 
