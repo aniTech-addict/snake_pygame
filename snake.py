@@ -4,7 +4,7 @@ import random
 x = pygame.init()
 
 VELOCITY = 3
-SIZE = 10
+SIZE = 20
 
 velocity_x = 0
 velocity_y = 0
@@ -24,10 +24,17 @@ game_over = False
 score = 0
 
 
-while not exit_game:
+while not exit_game :
     for event in pygame.event.get():
+        # Quit event
         if event.type == pygame.QUIT:
             exit_game = True
+        # Border-collision
+        if (car_pos.x > 1000 or car_pos.x<0) or (car_pos.y > 600 or car_pos.y <0 ):
+            game_over = True
+            print("game over")
+            exit_game = True
+
 
     gameWindow.fill("white")
 
@@ -36,9 +43,7 @@ while not exit_game:
 
     #Food Creation
 
-    if (abs(car_pos.x - food_pos.x) < 2) and (abs(car_pos.y - food_pos.y) < 2):
-        print("car_pos: ",car_pos.x, car_pos.y)
-        print("food_pos: ",food_pos.x, food_pos.y)
+    if (abs(car_pos.x - food_pos.x) < 10) and (abs(car_pos.y - food_pos.y) < 10):
         food_pos = pygame.Vector2(random.randint(20, int(gameWindow.get_width() -100)),random.randint(20, int(gameWindow.get_height() -100)))
         pygame.draw.rect(gameWindow, "red", [food_pos.x, food_pos.y, SIZE, SIZE], SIZE)
         print("Score : ", score)
