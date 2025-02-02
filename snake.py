@@ -5,7 +5,7 @@ x = pygame.init()
 
 VELOCITY = 3
 SIZE = 20
-food_size = 15
+food_size=15
 
 velocity_x = 0
 velocity_y = 0
