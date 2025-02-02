@@ -82,12 +82,17 @@ while not exit_game:
         if (x == snake_pos.x and y == snake_pos.y):
             game_over = True
             print("game over")
+            if(game_over):
+                text_screen("Game Over", "black", 500, 5)
+                pygame.time.wait(5000)
+            #delay exit by 5 seconds
             exit_game = True
     
         if score % 7 == 0:
             VELOCITY += 1  # Increase the speed of the snake with every 7 points
 
-    text_screen("Score : " + str(score), "black", 5, 5)  # Show Score on the screen
+    text_screen("Score : " + str(score), "black", 5, 5)
+      
 
     keys = pygame.key.get_pressed()
 
