@@ -5,60 +5,84 @@ x = pygame.init()
 
 VELOCITY = 3
 SIZE = 20
+food_size = 15
 
 velocity_x = 0
 velocity_y = 0
-#Game Display Window
+# Game Display Window
 gameWindow = pygame.display.set_mode((1000, 600))
 clock = pygame.time.Clock()
 pygame.display.set_caption("Snake Game")
 
-car_pos = pygame.Vector2(gameWindow.get_width() / 2, gameWindow.get_height() / 2)
-food_pos = pygame.Vector2(random.randint(10, int(gameWindow.get_width() -100 )),
-                              random.randint(10, int(gameWindow.get_height()-100)))
+snake_pos = pygame.Vector2(gameWindow.get_width() / 2, gameWindow.get_height() / 2)
+food_pos = pygame.Vector2(random.randint(10, int(gameWindow.get_width() - 100)),
+                          random.randint(10, int(gameWindow.get_height() - 100)))
+
+font = pygame.font.SysFont(None, 50)
+
+def text_screen(text, color, x, y):
+    screen_print = font.render(text, True, color)
+    gameWindow.blit(screen_print, (x, y))
+
 dt = 0
 
-#Game tracking variables
+# Game tracking variables
 exit_game = False
 game_over = False
 score = 0
+snake_list = []
+snake_len = 1
 
+def plot_body(gameWindow, color, snake_list):
+    for x, y in snake_list:
+        pygame.draw.rect(gameWindow, color, [x, y, SIZE, SIZE], SIZE)
 
-while not exit_game :
+while not exit_game:
     for event in pygame.event.get():
         # Quit event
         if event.type == pygame.QUIT:
             exit_game = True
         # Border-collision
-        if (car_pos.x > 1000 or car_pos.x<0) or (car_pos.y > 600 or car_pos.y <0 ):
+        if (snake_pos.x > 1000 or snake_pos.x < 0) or (snake_pos.y > 600 or snake_pos.y < 0):
             game_over = True
             print("game over")
             exit_game = True
 
-
     gameWindow.fill("white")
 
-    pygame.draw.rect(gameWindow,"green",[car_pos.x,car_pos.y,SIZE,SIZE],SIZE)
-    pygame.draw.rect(gameWindow,"red",[food_pos.x,food_pos.y,SIZE,SIZE],SIZE)
+    pygame.draw.rect(gameWindow, "green", [snake_pos.x, snake_pos.y, SIZE, SIZE], SIZE)
+    pygame.draw.rect(gameWindow, "red", [food_pos.x, food_pos.y, food_size, food_size], food_size)
 
-    #Food Creation
+    # Update Snake Body
+    snake_head = (snake_pos.x, snake_pos.y)  # Get the current head position
+    snake_list.append(snake_head)  # Add the new head position to the snake list
 
-    if (abs(car_pos.x - food_pos.x) < 10) and (abs(car_pos.y - food_pos.y) < 10):
-        food_pos = pygame.Vector2(random.randint(20, int(gameWindow.get_width() -100)),random.randint(20, int(gameWindow.get_height() -100)))
+    # Maintain the length of the snake
+    if len(snake_list) > snake_len:
+        del snake_list[0]  # Remove the oldest segment if the snake is longer than its length
+
+
+    # Maintain the length of the snake
+    if len(snake_list) > snake_len:
+        del snake_list[0]  # Remove the oldest segment if the snake is longer than its length
+
+    # Food Creation
+    if (abs(snake_pos.x - food_pos.x) < 10) and (abs(snake_pos.y - food_pos.y) < 10):
+        food_pos = pygame.Vector2(random.randint(20, int(gameWindow.get_width() - 100)),
+                                   random.randint(20, int(gameWindow.get_height() - 100)))
         pygame.draw.rect(gameWindow, "red", [food_pos.x, food_pos.y, SIZE, SIZE], SIZE)
-        print("Score : ", score)
+        print("Score : " + str(score))
+
         score += 1
+        snake_len += 5
+        plot_body(gameWindow, "green", snake_list)
+
         if score % 7 == 0:
-            VELOCITY += 1 # Increase the speed of the snake with every 7 points
+            VELOCITY += 1  # Increase the speed of the snake with every 7 points
 
-
-
-    border_x = gameWindow.get_width()
-    border_y = gameWindow.get_height()
+    text_screen("Score : " + str(score), "black", 5, 5)  # Show Score on the screen
 
     keys = pygame.key.get_pressed()
-
-    player_speed = 250 * dt
 
     if keys[pygame.K_w]:
         velocity_y = -VELOCITY
@@ -76,15 +100,14 @@ while not exit_game :
         velocity_x = VELOCITY
         velocity_y = 0
 
+    snake_pos.x += velocity_x
+    snake_pos.y += velocity_y
 
-    car_pos.x += velocity_x
-    car_pos.y += velocity_y
-
+    plot_body(gameWindow, "green", snake_list)  # Draw the snake body
 
     pygame.display.flip()
 
     dt = clock.tick(60)
-
 
 pygame.quit()
 quit()
