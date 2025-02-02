@@ -48,6 +48,8 @@ while not exit_game :
         pygame.draw.rect(gameWindow, "red", [food_pos.x, food_pos.y, SIZE, SIZE], SIZE)
         print("Score : ", score)
         score += 1
+        if score % 7 == 0:
+            VELOCITY += 1 # Increase the speed of the snake with every 7 points
 
 
 
