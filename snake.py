@@ -77,6 +77,13 @@ while not exit_game:
         snake_len += 5
         plot_body(gameWindow, "green", snake_list)
 
+    #snake-body collision detection
+    for (x, y) in snake_list[:-1]:
+        if (x == snake_pos.x and y == snake_pos.y):
+            game_over = True
+            print("game over")
+            exit_game = True
+    
         if score % 7 == 0:
             VELOCITY += 1  # Increase the speed of the snake with every 7 points
 
