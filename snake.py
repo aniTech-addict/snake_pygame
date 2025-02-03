@@ -88,27 +88,27 @@ while not exit_game:
             #delay exit by 5 seconds
             exit_game = True
     
-        if score % 7 == 0:
-            VELOCITY += 1  # Increase the speed of the snake with every 7 points
+        if score % 5 == 0 and VELOCITY < 10:  # Limit maximum speed
+            VELOCITY += 1 # Increase the speed of the snake with every 7 points
 
     text_screen("Score : " + str(score), "black", 5, 5)
       
 
     keys = pygame.key.get_pressed()
 
-    if keys[pygame.K_w]:
+    if keys[pygame.K_w] and velocity_y == 0: #Prevent movement in reverse direction
         velocity_y = -VELOCITY
         velocity_x = 0
 
-    if keys[pygame.K_s]:
+    if keys[pygame.K_s] and velocity_y == 0: #Prevent movement in reverse direction
         velocity_y = VELOCITY
         velocity_x = 0
 
-    if keys[pygame.K_a]:
+    if keys[pygame.K_a] and velocity_y == 0: #Prevent movement in reverse direction
         velocity_x = -VELOCITY
         velocity_y = 0
 
-    if keys[pygame.K_d]:
+    if keys[pygame.K_d] and velocity_y == 0: #Prevent movement in reverse direction
         velocity_x = VELOCITY
         velocity_y = 0
 
