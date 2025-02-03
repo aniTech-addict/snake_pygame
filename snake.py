@@ -44,9 +44,12 @@ while not exit_game:
             exit_game = True
         # Border-collision
         if (snake_pos.x > 1000 or snake_pos.x < 0) or (snake_pos.y > 600 or snake_pos.y < 0):
-            game_over = True
-            print("game over")
-            exit_game = True
+            while not exit_game:
+                    text_screen("Game Over", "black", gameWindow.get_width() / 2, gameWindow.get_height() / 2)
+                    text_screen("Score : "+str(score),"black",gameWindow.get_width()/2,gameWindow.get_height()/2+50)
+                    pygame.display.update()
+                    pygame.time.delay(5000)
+                    exit_game = True
 
     gameWindow.fill("white")
 
@@ -83,10 +86,17 @@ while not exit_game:
             game_over = True
             print("game over")
             if(game_over):
-                text_screen("Game Over", "black", 500, 5)
-                pygame.time.wait(5000)
+                while not exit_game:
+                    gameWindow.fill("white")
+                    text_screen("Game Over", "black", gameWindow.get_width() / 2, gameWindow.get_height() / 2)
+                    text_screen("Score : "+str(score),"black",gameWindow.get_width()/2,gameWindow.get_height()/2+50)
+                    pygame.display.update()
+                    pygame.time.delay(5000)
+                    exit_game = True
+                    
+                
             #delay exit by 5 seconds
-            exit_game = True
+            
     
         if score % 5 == 0 and VELOCITY < 10:  # Limit maximum speed
             VELOCITY += 1 # Increase the speed of the snake with every 7 points
@@ -96,19 +106,19 @@ while not exit_game:
 
     keys = pygame.key.get_pressed()
 
-    if keys[pygame.K_w] and velocity_y == 0: #Prevent movement in reverse direction
+    if keys[pygame.K_w] : #Prevent movement in reverse direction
         velocity_y = -VELOCITY
         velocity_x = 0
 
-    if keys[pygame.K_s] and velocity_y == 0: #Prevent movement in reverse direction
+    if keys[pygame.K_s] : #Prevent movement in reverse direction
         velocity_y = VELOCITY
         velocity_x = 0
 
-    if keys[pygame.K_a] and velocity_y == 0: #Prevent movement in reverse direction
+    if keys[pygame.K_a] : #Prevent movement in reverse direction
         velocity_x = -VELOCITY
         velocity_y = 0
 
-    if keys[pygame.K_d] and velocity_y == 0: #Prevent movement in reverse direction
+    if keys[pygame.K_d] : #Prevent movement in reverse direction
         velocity_x = VELOCITY
         velocity_y = 0
 
