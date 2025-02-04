@@ -78,6 +78,8 @@ while not exit_game:
 
         score += 1
         snake_len += 5
+        if score % 5 == 0 and VELOCITY < 10:  # Limit maximum speed
+            VELOCITY += 1 # Increase the speed of the snake with every 7 points
         plot_body(gameWindow, "green", snake_list)
 
     #snake-body collision detection
@@ -98,8 +100,7 @@ while not exit_game:
             #delay exit by 5 seconds
             
     
-        if score % 5 == 0 and VELOCITY < 10:  # Limit maximum speed
-            VELOCITY += 1 # Increase the speed of the snake with every 7 points
+        
 
     text_screen("Score : " + str(score), "black", 5, 5)
       
