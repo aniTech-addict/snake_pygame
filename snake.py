@@ -32,20 +32,34 @@ game_over = False
 score = 0
 snake_list = []
 snake_len = 1
-
+paused = False
 def plot_body(gameWindow, color, snake_list):
     for x, y in snake_list:
         pygame.draw.rect(gameWindow, color, [x, y, SIZE, SIZE], SIZE)
 
 while not exit_game:
+    
     for event in pygame.event.get():
         # Quit event
         if event.type == pygame.QUIT:
             exit_game = True
+            
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_p:  # Press 'P' to toggle pause
+                paused = not paused 
+                while paused:
+                    gameWindow.fill("black")
+                    text_screen("Game Paused", "white", gameWindow.get_width() / 2, gameWindow.get_height() / 2)
+                    pygame.display.update()
+                    for event in pygame.event.get():
+                        if event.type == pygame.KEYDOWN:
+                            if event.key == pygame.K_p:
+                                paused = False
+            
         # Border-collision
         if (snake_pos.x > 1000 or snake_pos.x < 0) or (snake_pos.y > 600 or snake_pos.y < 0):
             while not exit_game:
-                    text_screen("Game Over", "black", gameWindow.get_width() / 2, gameWindow.get_height() / 2)
+                    text_screen("Game Over", "red", gameWindow.get_width() / 2, gameWindow.get_height() / 2)
                     text_screen("Score : "+str(score),"black",gameWindow.get_width()/2,gameWindow.get_height()/2+50)
                     pygame.display.update()
                     pygame.time.delay(5000)
@@ -53,7 +67,7 @@ while not exit_game:
 
     gameWindow.fill("white")
 
-    pygame.draw.rect(gameWindow, "green", [snake_pos.x, snake_pos.y, SIZE, SIZE], SIZE)
+    pygame.draw.rect(gameWindow, "black", [snake_pos.x, snake_pos.y, SIZE, SIZE], SIZE)
     pygame.draw.rect(gameWindow, "red", [food_pos.x, food_pos.y, food_size, food_size], food_size)
 
     # Update Snake Body
@@ -90,7 +104,7 @@ while not exit_game:
             if(game_over):
                 while not exit_game:
                     gameWindow.fill("white")
-                    text_screen("Game Over", "black", gameWindow.get_width() / 2, gameWindow.get_height() / 2)
+                    text_screen("Game Over", "red", gameWindow.get_width() / 2, gameWindow.get_height() / 2)
                     text_screen("Score : "+str(score),"black",gameWindow.get_width()/2,gameWindow.get_height()/2+50)
                     pygame.display.update()
                     pygame.time.delay(5000)
