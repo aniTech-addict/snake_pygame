@@ -33,6 +33,7 @@ score = 0
 snake_list = []
 snake_len = 1
 paused = False
+direction = "o"
 def plot_body(gameWindow, color, snake_list):
     for x, y in snake_list:
         pygame.draw.rect(gameWindow, color, [x, y, SIZE, SIZE], SIZE)
@@ -121,21 +122,25 @@ while not exit_game:
 
     keys = pygame.key.get_pressed()
 
-    if keys[pygame.K_w] : #Prevent movement in reverse direction
+    if keys[pygame.K_w] and direction!="y"  : #Prevent movement in reverse direction
         velocity_y = -VELOCITY
         velocity_x = 0
+        direction = "y"
 
-    if keys[pygame.K_s] : #Prevent movement in reverse direction
+    if keys[pygame.K_s] and direction!="y": #Prevent movement in reverse direction
         velocity_y = VELOCITY
         velocity_x = 0
+        direction = "y"
 
-    if keys[pygame.K_a] : #Prevent movement in reverse direction
+    if keys[pygame.K_a] and direction!="x": #Prevent movement in reverse direction
         velocity_x = -VELOCITY
         velocity_y = 0
+        direction = "x"
 
-    if keys[pygame.K_d] : #Prevent movement in reverse direction
+    if keys[pygame.K_d] and direction!="x": #Prevent movement in reverse direction
         velocity_x = VELOCITY
         velocity_y = 0
+        direction = "x"
 
     snake_pos.x += velocity_x
     snake_pos.y += velocity_y
