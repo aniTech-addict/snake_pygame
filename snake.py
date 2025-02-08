@@ -1,7 +1,7 @@
 import pygame
 import random
 
-x = pygame.init()
+pygame.init()
 
 VELOCITY = 3
 SIZE = 20
@@ -35,6 +35,7 @@ snake_len = 1
 paused = False
 direction = "o"
 run_game=False
+
 def plot_body(gameWindow, color, snake_list):
     for x, y in snake_list:
         pygame.draw.rect(gameWindow, color, [x, y, SIZE, SIZE], SIZE)
@@ -57,15 +58,17 @@ while not exit_game:
         # Draw button text
         gameWindow.blit(button_text, (button_rect.x + 50, button_rect.y + 10))
         pygame.display.flip()
+    
     # Event handling
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+            exit_game = True
 
         if event.type == pygame.MOUSEBUTTONDOWN:  # Detect mouse click
             if button_rect.collidepoint(event.pos):  # Check if clicked inside button
                 print("Button Clicked!")
                 run_game=True
+
     if run_game:
         for event in pygame.event.get():
             # Quit event
@@ -85,13 +88,18 @@ while not exit_game:
                                     paused = False
                 
             # Border-collision
-            if (snake_pos.x > 1000 or snake_pos.x < 0) or (snake_pos.y > 600 or snake_pos.y < 0):
-                while not exit_game:
-                        text_screen("Game Over", "red", gameWindow.get_width() / 2, gameWindow.get_height() / 2)
-                        text_screen("Score : "+str(score),"black",gameWindow.get_width()/2,gameWindow.get_height()/2+50)
-                        pygame.display.update()
-                        pygame.time.delay(5000)
-                        exit_game = True
+        print(f"Snake Position: {snake_pos.x}, {snake_pos.y}")
+        print(f"Game Window Size: {gameWindow.get_width()}, {gameWindow.get_height()}")
+        if (snake_pos.x > gameWindow.get_width() or snake_pos.x < 0) or (snake_pos.y > gameWindow.get_height() or snake_pos.y < 0):
+            game_over = True
+            print("game over")
+            while not exit_game:
+                gameWindow.fill("black")
+                text_screen("Game Over", "red", gameWindow.get_width() / 2, gameWindow.get_height() / 2)
+                text_screen("Score : "+str(score),"black",gameWindow.get_width()/2,gameWindow.get_height()/2+50)
+                pygame.display.update()
+                pygame.time.delay(5000)
+                exit_game = True
 
         gameWindow.fill("white")
 
@@ -101,11 +109,6 @@ while not exit_game:
         # Update Snake Body
         snake_head = (snake_pos.x, snake_pos.y)  # Get the current head position
         snake_list.append(snake_head)  # Add the new head position to the snake list
-
-        # Maintain the length of the snake
-        if len(snake_list) > snake_len:
-            del snake_list[0]  # Remove the oldest segment if the snake is longer than its length
-
 
         # Maintain the length of the snake
         if len(snake_list) > snake_len:
@@ -124,7 +127,7 @@ while not exit_game:
                 VELOCITY += 1 # Increase the speed of the snake with every 7 points
             plot_body(gameWindow, "green", snake_list)
 
-        #snake-body collision detection
+        # Snake-body collision detection
         for (x, y) in snake_list[:-1]:
             if (x == snake_pos.x and y == snake_pos.y):
                 game_over = True
@@ -137,34 +140,27 @@ while not exit_game:
                         pygame.display.update()
                         pygame.time.delay(5000)
                         exit_game = True
-                        
-                    
-                #delay exit by 5 seconds
-                
-        
-            
 
         text_screen("Score : " + str(score), "black", 5, 5)
         
-
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_w] and direction!="y"  : #Prevent movement in reverse direction
+        if keys[pygame.K_w] and direction!="y": # Prevent movement in reverse direction
             velocity_y = -VELOCITY
             velocity_x = 0
             direction = "y"
 
-        if keys[pygame.K_s] and direction!="y": #Prevent movement in reverse direction
+        if keys[pygame.K_s] and direction!="y": # Prevent movement in reverse direction
             velocity_y = VELOCITY
             velocity_x = 0
             direction = "y"
 
-        if keys[pygame.K_a] and direction!="x": #Prevent movement in reverse direction
+        if keys[pygame.K_a] and direction!="x": # Prevent movement in reverse direction
             velocity_x = -VELOCITY
             velocity_y = 0
             direction = "x"
 
-        if keys[pygame.K_d] and direction!="x": #Prevent movement in reverse direction
+        if keys[pygame.K_d] and direction!="x": # Prevent movement in reverse direction
             velocity_x = VELOCITY
             velocity_y = 0
             direction = "x"
