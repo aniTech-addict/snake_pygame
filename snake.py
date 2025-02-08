@@ -41,9 +41,9 @@ def plot_body(gameWindow, color, snake_list):
         pygame.draw.rect(gameWindow, color, [x, y, SIZE, SIZE], SIZE)
 
 # Button Properties
-button_rect = pygame.Rect(150, 150, 200, 50)  # x, y, width, height
+button_rect = pygame.Rect(gameWindow.get_width()/2-100, gameWindow.get_height()/2, 200, 50)  # x, y, width, height
 font = pygame.font.Font(None, 36)  # Default font, size 36
-button_text = font.render("Start", True, "white")
+button_text = font.render("Start", True, "blue")
 
 while not exit_game:
     if not run_game:
@@ -51,9 +51,9 @@ while not exit_game:
         
         # Check if mouse is over button
         if button_rect.collidepoint(mouse_x, mouse_y):
-            pygame.draw.rect(gameWindow, "blue", button_rect)  # Darker color on hover
+            pygame.draw.rect(gameWindow, "yellow", button_rect)  # Darker color on hover
         else:
-            pygame.draw.rect(gameWindow, "blue", button_rect)
+            pygame.draw.rect(gameWindow, "pink", button_rect)
 
         # Draw button text
         gameWindow.blit(button_text, (button_rect.x + 50, button_rect.y + 10))
@@ -96,7 +96,7 @@ while not exit_game:
             while not exit_game:
                 gameWindow.fill("black")
                 text_screen("Game Over", "red", gameWindow.get_width() / 2, gameWindow.get_height() / 2)
-                text_screen("Score : "+str(score),"black",gameWindow.get_width()/2,gameWindow.get_height()/2+50)
+                text_screen("Score : "+str(score),"red",gameWindow.get_width()/2,gameWindow.get_height()/2+50)
                 pygame.display.update()
                 pygame.time.delay(5000)
                 exit_game = True
